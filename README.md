@@ -24,12 +24,12 @@ O Rolê AJU é uma plataforma que conecta as pessoas com as melhores experiênci
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/role-aju.git
+git clone https://github.com/seu-usuario/Rol-Aju.git
 ```
 
 2. Entre no diretório do projeto:
 ```bash
-cd role-aju
+cd Rol-Aju
 ```
 
 3. Instale as dependências:
