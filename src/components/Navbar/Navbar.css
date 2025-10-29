@@ -6,7 +6,8 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  padding: 1.5rem 0;
+  height: 80px;
+  padding: 0;
   transition: background-color 0.3s ease;
 }
 
@@ -29,24 +30,20 @@
 }
 
 .logo-placeholder {
-  display: flex; /* Adicionado para alinhar a imagem */
-  align-items: center; /* Adicionado para alinhar a imagem */
+  display: flex;
+  align-items: center;
   z-index: 10;
-  font-size: 1.8rem; /* Ajustado para a imagem */
-  font-weight: 700;
-  color: #fff;
   text-decoration: none;
-  flex-shrink: 0; /* Impede que a logo encolha */
-  height: 50px; /* Ajuste a altura da sua logo conforme necessário */
-  width: auto; /* Mantém a proporção da imagem */
+  flex-shrink: 0;
 }
 
 .logo-placeholder img {
-  height: 50px; /* Ajuste a altura da sua logo conforme necessário */
-  width: auto; /* Mantém a proporção da imagem */
+  height: 70px; 
+  width: auto;
+  max-height: 70px;
 }
 
-/* Novos containers para os grupos de links */
+/* Grupos de links */
 .nav-group {
   position: absolute;
   top: 50%;
@@ -55,13 +52,13 @@
 }
 
 .nav-group-left {
-  right: 50%; /* Começa no centro */
-  padding-right: 50px; /* Empurra 110px para a esquerda do centro */
+  right: 50%;
+  padding-right: 50px;
 }
 
 .nav-group-right {
-  left: 50%; /* Começa no centro */
-  padding-left: 50px; /* Empurra 110px para a direita do centro */
+  left: 50%;
+  padding-left: 50px;
 }
 
 .nav-list {
@@ -70,7 +67,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 3rem; /* Espaçamento lógico entre os itens */
+  gap: 3rem;
 }
 
 .nav-item {
@@ -82,31 +79,29 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #fff; /* Cor padrão para a home */
+  color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 20px; /* <-- Adicione esta linha para definir o tamanho da fonte */
+  font-size: 20px;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   transition: background-color 0.2s ease-in-out;
   white-space: nowrap;
 }
 
-/* Força todos os links a serem escuros na navbar interna */
 .navbar.navbar-internal .nav-link {
   color: #333;
 }
 
-/* Classe específica para os links escuros (continua útil para a home) */
 .nav-link-dark {
   color: #000;
 }
 
 .navbar.scrolled .nav-link {
-  color: #000; /* Todos os links ficam pretos com o scroll */
+  color: #000;
 }
 
-/* Estilos do Dropdown */
+/* Dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -137,19 +132,17 @@
 }
 
 .dropdown-column:first-child {
-  /* remova ou comente a linha abaixo */
-  /* border-right: 1px solid rgba(255, 255, 255, 0.2); */
   padding-right: 1rem;
 }
 
 .dropdown:hover .dropdown-content {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) scale(1); /* Ajusta a animação */
+  transform: translateX(-50%) scale(1);
 }
 
 .dropdown-item {
-  color: white; /* Cor do texto */
+  color: white;
   padding: 12px 12px;
   text-decoration: none;
   display: block;
@@ -157,12 +150,10 @@
   font-size: 15px;
 }
 
-/* Remove a borda do último item */
 .dropdown-item:last-child {
   border-bottom: none;
 }
 
-/* Estilo para o item "Ver Tudo" */
 .dropdown-item.bold-item {
   font-weight: bold;
 }
@@ -170,7 +161,7 @@
 .dropdown-item:hover {
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.1);
-  color: white; /* Garante que o texto permaneça branco no hover */
+  color: white;
 }
 
 .dropdown-divider {
@@ -189,6 +180,7 @@
   margin-top: 2px;
 }
 
+/* Search Bar */
 .search-bar {
   position: relative;
   margin-left: 2rem;
@@ -199,8 +191,8 @@
   border: 1px solid #999999; 
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  height: 40px; /* Altura reduzida para melhor proporção */
-  padding-right: 4px; /* Espaço para o botão */
+  height: 40px;
+  padding-right: 4px;
 }
 
 .search-bar:focus-within {
@@ -217,7 +209,7 @@
   font-size: 0.9rem;
   color: #1a202c;
   outline: none;
-  margin-right: -8px; /* Ajuste fino para o alinhamento */
+  margin-right: -8px;
 }
 
 .search-input::placeholder {
@@ -227,9 +219,9 @@
 }
 
 .search-button {
-  background: transparent; /* Mudado de #4a6cf7 para transparent */
+  background: transparent;
   border: none;
-  color: #000000; /* Cor do ícone agora é azul */
+  color: #000000;
   height: 36px;
   padding: 0 1.25rem;
   margin: 2px;
@@ -247,7 +239,7 @@
 }
 
 .search-button:hover {
-  background: rgba(74, 108, 247, 0.1); /* Fundo azul claro no hover */
+  background: rgba(74, 108, 247, 0.1);
   color: #3a5bd9;
   transform: scale(1.05);
 }
@@ -256,7 +248,6 @@
   transform: scale(0.98);
 }
 
-/* When navbar is scrolled */
 .navbar.scrolled .search-bar {
   background: #ffffff;
   border-color: #e2e8f0;
@@ -270,7 +261,7 @@
   color: rgba(0, 0, 0, 0.5);
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 992px) {
   .nav-list {
     gap: 2rem;
@@ -293,6 +284,4 @@
   .search-bar {
     margin-left: auto;
   }
-  
-  /* Add mobile menu button styles here */
 }

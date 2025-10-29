@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // 1. Importe useLocation
 import './Navbar.css';
 import { FiMapPin, FiList, FiPhone, FiInfo, FiSearch, FiChevronDown } from 'react-icons/fi';
-import logoImage from '../../assets/brasil.png';
+import logoImage from '../../assets/transparent-logo.png';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
