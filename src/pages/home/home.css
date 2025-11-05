@@ -70,3 +70,20 @@
 .home-button:hover {
   background-color: #2c4a3f;
 }
+
+.modal-option-button {
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.modal-option-button:hover {
+  border-color: #4CAF50;
+  background: #f5f5f5;
+  transform: translateX(5px);
+}
