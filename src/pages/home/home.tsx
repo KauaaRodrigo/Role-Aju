@@ -1,7 +1,25 @@
+import { useState } from 'react';
 import './home.css';
 import imagemPrincipal from '../../assets/imagem-aracaju-home.jpg';
+import { MultiStepModal, type UserPreferences } from '../../components/Modal/MultiStepModal';
 
 export function HomePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleComplete = (data: UserPreferences) => {
+    console.log('Preferências do usuário:', data);
+    // Aqui você pode navegar para a página de resultados ou processar os dados
+    // Por exemplo: navigate('/results', { state: data });
+  };
+
   return (
     <div className="home-container">
       {/* Seção da Esquerda: Imagem */}
@@ -18,11 +36,18 @@ export function HomePage() {
           deliciosa. <br />Explore mercados, museus e atrações únicas que
           tornam cada visita inesquecível.
         </p>
-        <button className="home-button">
+        <button className="home-button" onClick={handleOpenModal}>
           Começar
           <span>&#x2794;</span>
         </button>
       </div>
+
+      {/* Modal Multi-Step */}
+      <MultiStepModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onComplete={handleComplete}
+      />
     </div>
   );
 }
