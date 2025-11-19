@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './PlacesList.css';
 
-// Interfaces e Mapeamento exportados para serem usados pelo componente pai
 export interface Place {
   properties: {
     name: string;
@@ -9,6 +8,10 @@ export interface Place {
     categories: string[];
     lat: number;
     lon: number;
+    details: any; // <-- ADICIONE O PONTO E VÍRGULA AQUI
+    opening_hours: {
+        open_now: boolean;
+    };
   };
   geometry: {
     coordinates: [number, number];
@@ -19,14 +22,6 @@ export interface GroupedPlaces {
   [key: string]: Place[];
 }
 
-export const categoryMap: { [key: string]: string } = {
-  'catering.restaurant': 'Restaurantes',
-  'catering.bar': 'Bares',
-  'leisure.park': 'Parques',
-  'entertainment': 'Entretenimento',
-  'commercial.shopping_mall': 'Shoppings',
-};
-
 interface PlacesListProps {
     places: GroupedPlaces;
     loading: boolean;
@@ -35,41 +30,76 @@ interface PlacesListProps {
 
 export function PlacesList({ places, loading, onPlaceSelect }: PlacesListProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>('Restaurantes');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleCategory = (category: string) => {
     setActiveCategory(activeCategory === category ? null : category);
   };
+
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // Separa os caracteres dos acentos
+      .replace(/[\u0300-\u036f]/g, "") // Remove os acentos
+      .replace(/[^\w\s]/gi, ''); // Remove caracteres especiais (exceto letras, números e espaços)
+  };
+
+  const normalizedSearchTerm = normalizeText(searchTerm);
+
+  const filteredPlaces = Object.keys(places).reduce((acc, category) => {
+    const filtered = places[category].filter((place: Place) =>
+        normalizeText(place.properties.name).includes(normalizedSearchTerm)
+    );
+    if (filtered.length > 0) {
+        acc[category] = filtered;
+    }
+    return acc;
+  }, {} as GroupedPlaces);
+
+  const hasResults = Object.keys(filteredPlaces).length > 0;
 
   return (
     <div className="places-card">
       <div className="places-card-header">
         <h3>Locais Próximos</h3>
       </div>
+      
+      <div className="places-search-container">
+        <input
+          type="text"
+          placeholder="Filtrar locais na lista..."
+          className="places-search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      
       <div className="places-list">
         {loading ? (
-          <p style={{ padding: '16px' }}>Carregando locais...</p>
+          <p className="status-message">Carregando locais...</p>
+        ) : !hasResults ? (
+          <p className="status-message">Nenhum resultado encontrado.</p>
         ) : (
-          Object.keys(places).map(category => (
-            places[category].length > 0 && (
-              <div key={category} className="accordion-item">
-                <button onClick={() => toggleCategory(category)} className="accordion-header">
-                  {category} ({places[category].length})
-                  <span>{activeCategory === category ? '−' : '+'}</span>
-                </button>
-                {activeCategory === category && (
-                  <div className="accordion-content">
-                    <ul>
-                      {places[category].map((place, index) => (
-                        <li key={index} onClick={() => onPlaceSelect(place)}>
-                          <strong>{place.properties.name}</strong>
-                          <p>{place.properties.address_line2}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )
+          Object.keys(filteredPlaces).map(category => (
+            <div key={category} className="accordion-item">
+              <button onClick={() => toggleCategory(category)} className="accordion-header">
+                {category} ({filteredPlaces[category].length})
+                <span>{activeCategory === category ? '−' : '+'}</span>
+              </button>
+              
+              {(activeCategory === category || searchTerm.length > 0) && (
+                <div className="accordion-content">
+                  <ul>
+                    {filteredPlaces[category].map((place: Place, index: number) => (
+                      <li key={index} onClick={() => onPlaceSelect(place)}>
+                        <strong>{place.properties.name}</strong>
+                        <p>{place.properties.address_line2}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           ))
         )}
       </div>

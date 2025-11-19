@@ -2,11 +2,9 @@ import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { type Place } from './PlacesList'; // Importa a interface
+import type { Place } from './PlacesList';
 
 // --- Correção para o ícone padrão do marcador no Leaflet com Webpack ---
-// O Leaflet pode ter problemas para encontrar os ícones padrão quando usado com bundlers como o Webpack.
-// Este trecho de código corrige isso importando os ícones manualmente.
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -37,13 +35,23 @@ function SelectedPlaceHandler({ place }: { place: Place | null }) {
     return null; // Este componente não renderiza nada
 }
 
+// 1. Simplifique a interface de props
 interface MapComponentProps {
-    places: Place[];
     selectedPlace: Place | null;
-    onPlaceSelect: (place: Place | null) => void;
+    userLocation: [number, number] | null; // 1. Adicione a prop userLocation
 }
 
-export function MapComponent({ places, selectedPlace, onPlaceSelect }: MapComponentProps) {
+// 2. Crie um ícone azul para o usuário
+const userIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+
+export function MapComponent({ selectedPlace, userLocation }: MapComponentProps) { // 3. Receba a prop
   return (
     <MapContainer 
       center={center} 
@@ -55,28 +63,23 @@ export function MapComponent({ places, selectedPlace, onPlaceSelect }: MapCompon
         url={`https://maps.geoapify.com/v1/tile/carto/{z}/{x}/{y}.png?&apiKey=99f6cc892efa49ba999dcfb9ee7cf421`}
       />
 
-      {/* Adiciona marcadores para todos os locais */}
-      {places.map((place, index) => {
-        const [lon, lat] = place.geometry.coordinates;
-        return (
-            <Marker 
-                key={index} 
-                position={[lat, lon]}
-                eventHandlers={{
-                    click: () => {
-                        onPlaceSelect(place);
-                    },
-                }}
-            />
-        );
-      })}
-
-      {/* Mostra um Popup no local selecionado */}
+      {/* Marcador para o local selecionado (vermelho) */}
       {selectedPlace && (
-        <Popup position={[selectedPlace.geometry.coordinates[1], selectedPlace.geometry.coordinates[0]]}>
-            <strong>{selectedPlace.properties.name}</strong>
-            <p>{selectedPlace.properties.address_line2}</p>
-        </Popup>
+        <Marker position={[selectedPlace.geometry.coordinates[1], selectedPlace.geometry.coordinates[0]]}>
+            <Popup>
+                <strong>{selectedPlace.properties.name}</strong>
+                <p>{selectedPlace.properties.address_line2}</p>
+            </Popup>
+        </Marker>
+      )}
+
+      {/* 4. Marcador para a localização do usuário (azul) */}
+      {userLocation && (
+        <Marker position={userLocation} icon={userIcon}>
+            <Popup>
+                Você está aqui (ou este é o ponto de partida padrão).
+            </Popup>
+        </Marker>
       )}
 
       <SelectedPlaceHandler place={selectedPlace} />
